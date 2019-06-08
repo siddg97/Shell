@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 		pid_t pid = fork();
 		if ( pid < 0 )
 		{
-			perror("FORK failed to create child process");
+			write("FORK failed to create child process");
 		}
 
 		if ( pid == 0 )
