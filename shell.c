@@ -131,7 +131,8 @@ int main(int argc, char* argv[])
 		pid_t pid = fork();
 		if ( pid < 0 )
 		{
-			write("FORK failed to create child process");
+			write(STDOUT_FILENO, "FORK failed to create child process.\n", strlen("FORK failed to create child process.\n"));
+			exit(1);
 		}
 
 		if ( pid == 0 )
@@ -139,16 +140,23 @@ int main(int argc, char* argv[])
 			// Child Process
 			if ( execvp(tokens[0], tokens) == -1 )
 			{
-				perror("EXECVP failed to execute command");
+				write(STDOUT_FILENO, "EXECVP failed to execute command", strlen("EXECVP failed to execute command"));
 				exit(1);
 			}
 		}
-		else if ( pid > 0 )
+		else
 		{
 			// Parent Process
-			while(waitpid(-1, NULL, WNOHANG) > 0)
+			if ( !in_background )
+				while(waitpid(-1, NULL, WNOHANG) > 0)
 					;
 		}
+
+		// Cleanup any previously exited background child processes
+		// (The zombies)
+		while (waitpid(-1, NULL, WNOHANG) > 0)
+			; // do nothing.
+
 		/**
 		 * Steps For Basic Shell:
 		 * 1. Fork a child process
