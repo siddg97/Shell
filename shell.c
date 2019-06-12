@@ -14,7 +14,7 @@
 #define HISTORY_DEPTH 10
 char history[HISTORY_DEPTH][COMMAND_LENGTH];
 int commands = 0;
-
+int ctrlPressed = 0;
 
 /**
  * Command Input and Processing
@@ -139,7 +139,7 @@ void read_command(char *buff, char *tokens[], _Bool *in_background)
 
 	if (commands < 10)
 		strcpy(history[commands % 10], buff); // HISTORY
-	else
+	else if(ctrlPressed != 1)								//
 	{
 		for(int i = 0; i < (HISTORY_DEPTH - 1) ; i++)
 		{
@@ -184,6 +184,7 @@ void printHistory()
 void handle_SIGINT()
 {
 		write(STDOUT_FILENO, "\n", strlen("\n"));
+		ctrlPressed = 1;
     printHistory();
 }
 
@@ -250,11 +251,12 @@ int main(int argc, char* argv[])
 				printHistory();
 				continue;
 			}
-
+/*
 			if (in_background)
 			{
 				write(STDOUT_FILENO, "Run in background.", strlen("Run in background."));
 			}
+*/
 		/**
 		 * Steps For Basic Shell:
 		 * 1. Fork a child process
