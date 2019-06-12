@@ -1,0 +1,9 @@
+CMPT 300 Assignment 2
+
+Group Name: GroupAssn2
+Group Members: Murtaza Mushtaq (301347189)
+			   Vinay Lohana (301336732)
+
+This submission contains a shell.c, Makefile, and README file. To run the shell.c file, just execute make command and then run the excutable ./shell
+
+No online references are needed for this assignment since no code was copied. However, online resources such as the ones given by the instructor and a few others were used to gain knowledge relating to the completion of the project. 
